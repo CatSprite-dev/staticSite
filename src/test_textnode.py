@@ -1,7 +1,6 @@
 import unittest
 
-from textnode import TextNode, TextType
-from main import text_node_to_html_node
+from textnode import TextNode, TextType, text_node_to_html_node
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
@@ -53,6 +52,11 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(len(html_node.props), 1)
         self.assertEqual(html_node.props["href"], "https://example.com/image.jpg")
 
+    def test_bold(self):
+        node = TextNode("This is bold", TextType.BOLD)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "b")
+        self.assertEqual(html_node.to_html(), "<b>This is bold</b>")
 
 if __name__ == "__main__":
     unittest.main()
