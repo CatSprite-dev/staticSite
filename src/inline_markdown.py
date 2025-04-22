@@ -126,10 +126,3 @@ def text_to_textnodes(text):
     with_images = split_nodes_image(with_code)
     with_links = split_nodes_link(with_images)
     return with_links
-
-#node = TextNode(
-#            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
-#            TextType.TEXT,
-#        )
-#new_nodes = split_nodes_image([node])
-#print(new_nodes)
