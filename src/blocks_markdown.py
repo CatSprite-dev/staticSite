@@ -62,12 +62,17 @@ def markdown_to_html_node(markdown):
             child_node = ParentNode("blockquote", [], None)
             lines = block.split("\n")
             for line in lines:
-                if lines.index(line) == len(lines) - 1:
-                    text_nodes = text_to_textnodes(line.lstrip(">"))
+                if line == ">":
+                    continue
+                text_nodes = []
+                if lines.index(line) == 0:
+                    text_node = text_to_textnodes(line.lstrip("> "))
+                    text_nodes.append(text_node)
                 else:
-                    text_nodes = text_to_textnodes(line.lstrip("> "))
+                    text_node = text_to_textnodes(line.lstrip(">"))
+                    text_nodes.append(text_node)
                 for text_node in text_nodes:
-                    html_node = text_node_to_html_node(text_node)
+                    html_node = text_node_to_html_node(*text_node)
                     child_node.children.append(html_node)
             parent_node.children.append(child_node)
 
@@ -76,10 +81,12 @@ def markdown_to_html_node(markdown):
             items = block.split("\n")
             for item in items:
                 if item != "":
+                    grandchild_node = ParentNode("li", [])
                     text_nodes = text_to_textnodes(item[2:])
                     for text_node in text_nodes:
                         new_item = text_node_to_html_node(text_node)
-                child_node.children.append(ParentNode("li", [new_item]))
+                        grandchild_node.children.append(new_item)
+                    child_node.children.append(grandchild_node)
             parent_node.children.append(child_node)
 
         if block_type == BlockType.OLIST:
@@ -87,17 +94,19 @@ def markdown_to_html_node(markdown):
             items = block.split("\n")
             for item in items:
                 if item != "":
+                    grandchild_node = ParentNode("li", [])
                     text_nodes = text_to_textnodes(item[3:])
                     for text_node in text_nodes:
                         new_item = text_node_to_html_node(text_node)
-                child_node.children.append(ParentNode("li", [new_item]))
+                        grandchild_node.children.append(new_item)
+                    child_node.children.append(grandchild_node)
             parent_node.children.append(child_node)
         
         if block_type == BlockType.CODE:
             child_node = ParentNode("code", [], None)
             text = block.strip("```").lstrip()
-            x = TextNode(text, TextType.TEXT)
-            new_item = text_node_to_html_node(x)
+            grandchild_node = TextNode(text, TextType.TEXT)
+            new_item = text_node_to_html_node(grandchild_node)
             child_node.children.append(new_item)
             pre_tag = ParentNode("pre", [child_node])
             parent_node.children.append(pre_tag)
@@ -148,4 +157,3 @@ def text_to_children(text):
         for text_node in text_nodes:
             child_node.children.append(text_node_to_html_node(text_node))
         return child_node
-

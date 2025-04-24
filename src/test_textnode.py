@@ -32,7 +32,7 @@ class TestTextNode(unittest.TestCase):
     def test_image(self):
         image_url = "https://example.com/image.jpg"
         alt_text = "Example image"
-        node = TextNode(image_url, TextType.IMAGE, alt_text)
+        node = TextNode(alt_text, TextType.IMAGE, image_url)
         
         html_node = text_node_to_html_node(node)
     

@@ -1,5 +1,6 @@
 import unittest
 from blocks_markdown import *
+from generate_page import extract_title
 
 class TestBlocksMarkdown(unittest.TestCase):
     def test_markdown_to_blocks(self):
@@ -64,6 +65,7 @@ the **same** even with inline stuff
     def test_blockquote(self):
         md = """
 > This is a blockquote.
+>
 > It spans multiple lines.
 """
         node = markdown_to_html_node(md)
@@ -112,4 +114,20 @@ the **same** even with inline stuff
             "<div><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3></div>",
         )
 
+    def test_extract_title(self):
+        md = """
+# Heading 1 
+## Heading 2
+### Heading 3
+"""
+        title = extract_title(md)
+        self.assertEqual(title, "Heading 1")
     
+    def test_extract_title_except(self):
+        md = """
+Heading 1 
+## Heading 2
+### Heading 3
+"""
+        with self.assertRaises(Exception):
+            extract_title(md)

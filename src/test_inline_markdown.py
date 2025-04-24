@@ -48,13 +48,13 @@ class TestInlineMarkdown(unittest.TestCase):
         )
 
     def test_delim_italic(self):
-        node = TextNode("This is text with an _italic_ word", TextType.TEXT)
+        node = TextNode("Disney _didn't ruin it_ (okay, but Amazon might have)", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "_", TextType.ITALIC)
         self.assertListEqual(
             [
-                TextNode("This is text with an ", TextType.TEXT),
-                TextNode("italic", TextType.ITALIC),
-                TextNode(" word", TextType.TEXT),
+                TextNode("Disney ", TextType.TEXT),
+                TextNode("didn't ruin it", TextType.ITALIC),
+                TextNode(" (okay, but Amazon might have)", TextType.TEXT),
             ],
             new_nodes,
         )
